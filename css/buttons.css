@@ -1,0 +1,68 @@
+/* =========================================================
+   Button — CTA (Figma: button frame 12:2, "enhanced CTA" / "Back")
+   Pill with a 3px dark stroke sitting on an orange "shadow" slab.
+   Hover lifts the pill 5px and darkens the slab; click fills it with --bg-main.
+
+   <a class="btn" href="#">Check more <svg class="btn__icon">…</svg></a>
+   <a class="btn btn--sm" href="#">More <svg class="btn__icon">…</svg></a>
+   ========================================================= */
+
+.btn {
+  --btn-lift: 0px;          /* pill offset from rest position */
+  --btn-depth: 6px;         /* visible slab below the pill */
+  --btn-slab: var(--btn-slab-color);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  height: 56px;
+  padding: 13px 31px;       /* Figma 16/34 with a 3px inside stroke */
+  border: 3px solid var(--fg-stroke);
+  border-radius: 50px;
+  background: var(--bg-white);
+  color: var(--fg-header);
+  font-family: var(--font-cta);
+  font-size: var(--text-cta-size);
+  line-height: var(--text-cta-lh);
+  letter-spacing: var(--text-cta-ls);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  /* slab = orange fill (inset 3px) over a dark outline, same width as the pill */
+  box-shadow:
+    0 var(--btn-depth) 0 -3px var(--btn-slab),
+    0 var(--btn-depth) 0 0 var(--fg-stroke);
+  transform: translateY(var(--btn-lift));
+  transition: transform .15s ease, box-shadow .15s ease, background-color .1s ease;
+}
+
+/* Small — Figma "default more button" (21:50): 48px tall, padding 12/24 */
+.btn--sm {
+  height: 48px;
+  padding: 9px 21px;        /* Figma 12/24 with a 3px inside stroke */
+}
+
+.btn:hover {
+  --btn-lift: -5px;
+  --btn-depth: 11px;
+  --btn-slab: var(--btn-slab-hover);
+}
+
+.btn:active {
+  background: var(--bg-main);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--brand-blue-1);
+  outline-offset: 4px;
+}
+
+.btn__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--fg-stroke);
+}

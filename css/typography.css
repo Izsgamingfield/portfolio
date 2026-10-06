@@ -1,0 +1,161 @@
+/* =========================================================
+   Typography styles — one class per Figma text style (All/*)
+   ========================================================= */
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-paragraph-size);
+  line-height: var(--text-paragraph-lh);
+  letter-spacing: var(--text-paragraph-ls);
+  color: var(--color-text);
+  background: var(--color-page);
+  font-variation-settings: "opsz" 14;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* All/Deco1 — decoration on home page */
+.t-deco1 {
+  font-family: var(--font-display);
+  font-size: var(--text-deco1-size);
+  line-height: var(--text-deco1-lh);
+  letter-spacing: var(--text-deco1-ls);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* All/Deco2 — decoration on home page for project */
+.t-deco2 {
+  font-family: var(--font-display);
+  font-size: var(--text-deco2-size);
+  line-height: var(--text-deco2-lh);
+  letter-spacing: var(--text-deco2-ls);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* All/Deco3 — numbers */
+.t-deco3 {
+  font-family: var(--font-display);
+  font-size: var(--text-deco3-size);
+  line-height: var(--text-deco3-lh);
+  letter-spacing: var(--text-deco3-ls);
+  font-weight: var(--weight-bold);
+  color: var(--color-accent-alt);
+}
+
+/* All/title1 — biggest text on pre/project thumb */
+.t-title1 {
+  font-family: var(--font-display);
+  font-size: var(--text-title1-size);
+  line-height: var(--text-title1-lh);
+  letter-spacing: var(--text-title1-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+/* All/title2 — detail title on project page */
+.t-title2 {
+  font-family: var(--font-display);
+  font-size: var(--text-title2-size);
+  line-height: var(--text-title2-lh);
+  letter-spacing: var(--text-title2-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+/* All/title3 — homepage title */
+.t-title3 {
+  font-family: var(--font-display);
+  font-size: var(--text-title3-size);
+  line-height: var(--text-title3-lh);
+  letter-spacing: var(--text-title3-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+/* All/title4 */
+.t-title4 {
+  font-size: var(--text-title4-size);
+  line-height: var(--text-title4-lh);
+  letter-spacing: var(--text-title4-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+/* title5 (local style in Figma) */
+.t-title5 {
+  font-family: var(--font-display);
+  font-size: var(--text-title5-size);
+  line-height: var(--text-title5-lh);
+  letter-spacing: var(--text-title5-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+/* All/Headline */
+.t-headline {
+  font-size: var(--text-headline-size);
+  line-height: var(--text-headline-lh);
+  letter-spacing: var(--text-headline-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-sub);
+}
+
+/* All/body */
+.t-body {
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-lh);
+  letter-spacing: var(--text-body-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-body);
+}
+
+/* Web/Paragraph */
+.t-paragraph {
+  font-size: var(--text-paragraph-size);
+  line-height: var(--text-paragraph-lh);
+  letter-spacing: var(--text-paragraph-ls);
+  font-weight: var(--weight-regular);
+  color: var(--color-text);
+}
+
+/* All/label1 */
+.t-label1 {
+  font-size: var(--text-label1-size);
+  line-height: var(--text-label1-lh);
+  letter-spacing: var(--text-label1-ls);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  color: var(--color-text-body);
+}
+
+/* All/label2 */
+.t-label2 {
+  font-size: var(--text-label2-size);
+  line-height: var(--text-label2-lh);
+  letter-spacing: var(--text-label2-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-body);
+}
+
+/* All/mobile body */
+.t-mobile-body {
+  font-size: var(--text-mobile-body-size);
+  line-height: var(--text-mobile-body-lh);
+  letter-spacing: var(--text-mobile-body-ls);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-body);
+}
+
+/* All/mobile label1 */
+.t-mobile-label1 {
+  font-size: var(--text-mobile-label1-size);
+  line-height: var(--text-mobile-label1-lh);
+  letter-spacing: var(--text-mobile-label1-ls);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  color: var(--color-text-body);
+}
