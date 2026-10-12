@@ -54,7 +54,7 @@
   --text-paragraph-size: 16px; --text-paragraph-lh: 22px; --text-paragraph-ls: -0.03em;
   --text-label1-size: 14px;    --text-label1-lh: 18px;    --text-label1-ls: 0;
   --text-label2-size: 14px;    --text-label2-lh: 18px;    --text-label2-ls: -0.02em;
-  --text-mobile-body-size: 13px;   --text-mobile-body-lh: 18px;   --text-mobile-body-ls: -0.02em;
+  --text-mobile-body-size: 14px;   --text-mobile-body-lh: 18px;   --text-mobile-body-ls: -0.02em;
   --text-cta-size: 18px;           --text-cta-lh: 24px;           --text-cta-ls: 0.012em; /* Figma: Web-context big (Bold) */
   --text-mobile-label1-size: 13px; --text-mobile-label1-lh: 18px; --text-mobile-label1-ls: 0;
 
