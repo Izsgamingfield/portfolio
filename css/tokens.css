@@ -16,9 +16,9 @@
   --fg-header:     #292424; /* Headers   · Figma: Foreground/primary */
   --fg-stroke:     #3A3232; /* Stroke    · Figma: Foreground/secondary-illustration */
   --fg-subheader:  #595454; /* Subheader · Figma: Foreground/third */
-  --fg-body:       #777777; /* Body      · Figma: Foreground/body */
-  --fg-subtitle:   #969592; /* Subtitle */
-  --fg-muted:      #B1B1B1; /* (unlabeled in Figma) */
+  --fg-body:       #696969; /* Body      · Figma: Foreground/body */
+  --fg-subtitle:   #777777; /* Subtitle */
+  --fg-notes:      #969592; /* Notes */
   --fg-g1:         #181818; /* Section headings on color sheet · Figma: g1 */
 
   /* ---------- Background ---------- */
@@ -68,7 +68,7 @@
   --color-text:        var(--fg-header);
   --color-text-strong: var(--fg-stroke);
   --color-text-sub:    var(--fg-subheader);
-  --color-text-body:   var(--fg-subheader); /* #595454; #777 was under 4.5:1 on --bg-main */
+  --color-text-body:   var(--fg-body);      /* #696969: 4.8:1 on --bg-main, 5.0:1 on --bg-detail */
   --color-text-muted:  var(--fg-subtitle);
   --color-border:      var(--bg-enhance);
   --color-page:        var(--bg-detail);
