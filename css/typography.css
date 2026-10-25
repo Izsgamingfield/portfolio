@@ -159,3 +159,14 @@ body {
   text-transform: uppercase;
   color: var(--color-text-body);
 }
+
+/* Web/submark — section labels ("The challenge", "Solution") */
+.t-submark {
+  font-family: var(--font-submark);
+  font-size: var(--text-submark-size);
+  line-height: var(--text-submark-lh);
+  letter-spacing: var(--text-submark-ls);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}

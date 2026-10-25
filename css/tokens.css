@@ -3,7 +3,7 @@
    Source: Figma "My design system" (Font frame 1:662, Color frame 1:884)
    ========================================================= */
 
-/* Fonts (DM Sans, Gabarito, Manrope) are loaded by a <link> in each page's <head>,
+/* Fonts (DM Sans, Gabarito, Manrope, Poppins) are loaded by a <link> in each page's <head>,
    not @import here, so the browser can fetch them without waiting for this file. */
 
 :root {
@@ -11,6 +11,7 @@
   --font-sans:    "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif; /* body, labels */
   --font-display: "Gabarito", var(--font-sans);                                /* deco1–3, title1–3, title5 */
   --font-cta:     "Manrope", var(--font-sans);                                /* buttons */
+  --font-submark: "Poppins", var(--font-sans);                                /* section labels (Web-submark) */
 
   /* ---------- Foreground ---------- */
   --fg-header:     #292424; /* Headers   · Figma: Foreground/primary */
@@ -36,8 +37,7 @@
   --brand-orange-2: #FF8D4E;
   --brand-blue-1:   #4B5DFF;
   --brand-blue-2:   #7CB0FE;
-  --brand-yahoo-1:  #7D2EFF;
-  --brand-yahoo-2:  #4B5DFF; /* Figma: Branding/purple 2 */
+  --brand-yahoo-1:  #7D2EFF; /* Figma: Branding/purple 1 */
   --brand-siemens-1:#009A9F;
 
   /* ---------- Type scale (Figma text styles "All/*") ---------- */
@@ -58,6 +58,7 @@
   --text-mobile-body-size: 14px;   --text-mobile-body-lh: 18px;   --text-mobile-body-ls: -0.02em;
   --text-cta-size: 18px;           --text-cta-lh: 24px;           --text-cta-ls: 0.012em; /* Figma: Web-context big (Bold) */
   --text-mobile-label1-size: 13px; --text-mobile-label1-lh: 18px; --text-mobile-label1-ls: 0;
+  --text-submark-size: 16px;       --text-submark-lh: normal;     --text-submark-ls: normal; /* Figma: Web-submark */
 
   --weight-regular: 400;
   --weight-medium: 500;
@@ -74,7 +75,7 @@
   --color-page:        var(--bg-detail);
   --color-surface:     var(--bg-white);
   --color-accent:      var(--brand-yellow-1);
-  --color-accent-alt:  var(--brand-yahoo-2);   /* numbers (deco3) */
+  --color-accent-alt:  var(--brand-blue-1);    /* numbers (deco3) */
   --btn-slab-color:    var(--brand-orange-1);  /* button shadow slab */
   --btn-slab-hover:    #AC4A14;                /* orange + 26% black overlay */
 }
