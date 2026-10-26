@@ -52,6 +52,7 @@
   --text-title5-size: 18px;    --text-title5-lh: 24px;    --text-title5-ls: -0.03em;
   --text-headline-size: 18px;  --text-headline-lh: 24px;  --text-headline-ls: -0.03em;
   --text-body-size: 16px;      --text-body-lh: 22px;      --text-body-ls: -0.03em;
+  --text-body-regular-size: 16px; --text-body-regular-lh: 22px; --text-body-regular-ls: -0.03em; /* body at 400, for long grey text */
   --text-paragraph-size: 16px; --text-paragraph-lh: 22px; --text-paragraph-ls: -0.03em;
   --text-label1-size: 14px;    --text-label1-lh: 18px;    --text-label1-ls: 0;
   --text-label2-size: 14px;    --text-label2-lh: 18px;    --text-label2-ls: -0.02em;

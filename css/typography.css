@@ -113,6 +113,15 @@ body {
   color: var(--color-text-body);
 }
 
+/* All/body regular — body at 400 for longer grey text (lists, captions under stats) */
+.t-body-regular {
+  font-size: var(--text-body-regular-size);
+  line-height: var(--text-body-regular-lh);
+  letter-spacing: var(--text-body-regular-ls);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-body);
+}
+
 /* Web/Paragraph */
 .t-paragraph {
   font-size: var(--text-paragraph-size);
