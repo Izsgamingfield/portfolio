@@ -29,6 +29,7 @@
   --bg-secondary:   #E5E5E5; /* Secondary section */
   --bg-enhance:     #CBCBCB; /* Enhancement part     · Figma: Background/third */
   --bg-dark:        #1C1C1C; /* Main page BG for dark page */
+  --background-dark: #3F3D3D; /* Card surface on dark pages */
 
   /* ---------- Branding / highlight ---------- */
   --brand-yellow-1: #FFD900; /* Yellow decoration · Figma: Branding/main */
@@ -38,6 +39,7 @@
   --brand-blue-1:   #4B5DFF;
   --brand-blue-2:   #7CB0FE;
   --brand-yahoo-1:  #7D2EFF; /* Figma: Branding/purple 1 */
+  --brand-dark:     #DCCCFF; /* Brand purple on dark pages */
   --brand-siemens-1:#009A9F;
 
   /* ---------- Type scale (Figma text styles "All/*") ---------- */
