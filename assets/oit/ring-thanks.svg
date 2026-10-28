@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="124" height="124" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Ellipse 702">
+<path d="M124 62C124 96.2417 96.2417 124 62 124C27.7583 124 0 96.2417 0 62C0 27.7583 27.7583 0 62 0C96.2417 0 124 27.7583 124 62Z" fill="url(#paint0_linear_0_99)" fill-opacity="0.2"/>
+<use xlink:href="#stroke0_0_99" stroke="url(#paint1_linear_0_99)" stroke-opacity="0.2"/>
+<use xlink:href="#stroke0_0_99" stroke="url(#paint2_linear_0_99)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_99" x1="16.1739" y1="15.2754" x2="96.1449" y2="110.522" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0066FF"/>
+<stop offset="1" stop-color="#0066FF" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_99" x1="13.4783" y1="13.4783" x2="99.7391" y2="113.217" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E2EEFF"/>
+<stop offset="1" stop-color="#9EC5FF" stop-opacity="0.33"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_99" x1="40.4348" y1="19.7681" x2="84.4638" y2="114.116" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0066FF" stop-opacity="0.29"/>
+<stop offset="1" stop-color="#0066FF" stop-opacity="0"/>
+</linearGradient>
+<path id="stroke0_0_99" d="M123.325 62C123.325 95.8689 95.8689 123.325 62 123.325C28.1311 123.325 0.675 95.8689 0.675 62C0.675 28.1311 28.1311 0.675 62 0.675C95.8689 0.675 123.325 28.1311 123.325 62Z" stroke-width="1.35"/>
+</defs>
+</svg>
