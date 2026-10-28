@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="robots" content="noai, noimageai">
+<title>Inken — Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Gabarito:wght@500;600;700&family=Manrope:wght@700&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/typography.css">
+<script>document.documentElement.classList.add("js");</script>
+<style>
+  /* =========================================================
+     Layout follows Figma "Portfolio 2027" (13:927):
+       Web-1280 / Web-1920 → fixed 1024px column, 1210px hero   (≥1240px)
+       tablet-800          → fluid, side-by-side hero           (640–1239px)
+       phone-402           → fluid, stacked hero                (<640px)
+     ========================================================= */
+
+  body { background: var(--bg-dark-primary); color-scheme: dark; overflow-x: clip; }
+  img { display: block; max-width: 100%; }
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: 56px; }
+  /* Wider than the 792px project column. The text column is narrower than the
+     title, so a long title line runs over the illustration's doodles, short of its circle. */
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 438px 561px;
+    grid-template-areas: "text art";
+    align-items: center;
+    width: 999px;
+    margin: 0 auto;
+  }
+  .hero__text { grid-area: text; position: relative; z-index: 1; }
+  /* On short screens the illustration shrinks with the screen height so the
+     whole cover fits (vh fallback, then svh where supported) */
+  .hero__art {
+    grid-area: art;
+    justify-self: end;
+    width: max(240px, min(100%, calc((100vh - 230px) * 564 / 604)));
+    width: max(240px, min(100%, calc((100svh - 230px) * 564 / 604)));
+    height: auto;
+    aspect-ratio: 564 / 604;
+  }
+  .hero__squiggle { display: block; width: 88px; height: auto; overflow: visible; color: var(--fg-dark-primary); }
+  .hero__title {
+    margin: 36px 0 0;
+    max-width: 580px;        /* wraps the title on wide screens */
+    font-family: var(--font-display);
+    font-size: 96px;
+    line-height: 86px;
+    letter-spacing: -0.03em;
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    color: var(--brand-yellow-1);
+  }
+  .hero__intro {
+    margin: 24px 0 0;
+    max-width: 420px;
+    font-size: var(--text-body-size);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
+    font-weight: var(--weight-medium);
+    color: var(--fg-dark-primary);
+  }
+  .hero__intro em { font-style: normal; color: var(--brand-orange-2); }
+
+  /* ---------- Hero entrance ----------
+     Starts when the illustration loads (.hero.is-playing). Everything that appears
+     rises (fade in while moving up 24px, 0.6s); the text is all in by 1.2s:
+       0s     illustration rises in (its own stamp and line drawing play inside it)
+       0.4s   title rises in word by word, 0.05s apart
+       0.47s  squiggle dots pop, zigzag draws as the illustration's lines start
+       0.6s   intro rises in                                                    */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .hero__art, .js .hero__title .w, .js .hero__intro { opacity: 0; }
+    .js .sq-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    .js .sq-dot { transform: scale(0); transform-box: fill-box; transform-origin: center; }
+
+    .hero.is-playing .sq-dot--start { animation: sq-pop .3s cubic-bezier(.34, 1.8, .64, 1) .47s both; }
+    .hero.is-playing .sq-line      { animation: sq-trim .45s cubic-bezier(.45, 0, .2, 1) .5s both; }
+    .hero.is-playing .sq-dot--end   { animation: sq-pop .3s cubic-bezier(.34, 1.8, .64, 1) .9s both; }
+    .hero.is-playing .hero__art      { animation: rise .6s cubic-bezier(.22, 1, .36, 1) both; }
+    .hero.is-playing .hero__title .w { animation: rise .6s cubic-bezier(.22, 1, .36, 1) var(--at) both; }
+    .hero.is-playing .hero__intro    { animation: rise .6s cubic-bezier(.22, 1, .36, 1) .6s both; }
+  }
+  @keyframes sq-trim { to { stroke-dashoffset: 0; } }
+  @keyframes sq-pop  { to { transform: scale(1); } }
+  .hero__title .w { display: inline-block; }
+  .hero__title .w:nth-child(1) { --at: .4s; }
+  .hero__title .w:nth-child(2) { --at: .45s; }
+  .hero__title .w:nth-child(3) { --at: .5s; }
+  /* the page-wide rise as keyframes, for things that play on a timeline rather than on scroll */
+  @keyframes rise {
+    from { opacity: 0; translate: 0 24px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+  .hero__intro a { color: inherit; text-decoration: none; }
+  /* Hover effects only on devices that really hover; on touch they would stick after a tap */
+  @media (hover: hover) and (pointer: fine) {
+    .hero__intro a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  }
+
+  /* =========================================================
+     Games (Figma "做网页" 664:836)
+       Featured: poster | video, details, link
+       Grid: two columns of art, details, link
+     ========================================================= */
+  .games {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    width: 999px;                   /* same column as the hero: title on the left, illustration on the right */
+    margin: 0 auto;
+    padding-top: 120px;
+  }
+  .feature { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .feature__poster { width: 100%; height: auto; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, .45); }
+  .feature__body { display: flex; flex-direction: column; gap: 32px; padding-top: 24px; }
+
+  /* YouTube: a still with a play button until clicked, then the player loads in its place */
+  .video {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    background: var(--bg-dark-secondary) center / cover no-repeat;
+  }
+  .video__play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .video__play svg { display: block; transition: transform .2s ease; }
+  .video__play:disabled { cursor: default; }
+  .video__play:focus-visible { outline: 2px solid var(--fg-dark-primary); outline-offset: -4px; border-radius: 16px; }
+  @media (hover: hover) and (pointer: fine) {
+    .video__play:not(:disabled):hover svg { transform: scale(1.08); }
+  }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  .games__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px 24px; }
+  .card { display: flex; flex-direction: column; gap: 24px; }
+  .card__img { width: 100%; height: auto; aspect-ratio: 1109 / 857; object-fit: cover; border-radius: 16px; }
+
+  .game__info { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .card .game__info { flex: 1; }
+  .game__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 16px;
+    width: 100%;
+    margin: 0;
+  }
+  .game__meta div { display: flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+  .game__meta dt {                  /* All/label1 */
+    font-size: var(--text-label1-size);
+    line-height: var(--text-label1-lh);
+    letter-spacing: var(--text-label1-ls);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    color: var(--fg-dark-body);
+  }
+  .game__meta dd {
+    margin: 0;
+    font-size: var(--text-body-size);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
+    font-weight: var(--weight-bold);
+    color: var(--fg-dark-primary);
+  }
+  .game__desc { margin: 0; }
+
+  /* Figma CTA-dark: a dark pill, pushed to the bottom of grid cards so they line up */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 32px;               /* + the 16px gap = Figma’s 48px above the button */
+    padding: 13px 21px;             /* Figma 16/24 with a 3px inside stroke */
+    border: 3px solid var(--fg-subheader);
+    border-radius: 50px;
+    background: var(--bg-dark-secondary);
+    color: var(--fg-dark-primary);
+    font-size: var(--text-cta-size);
+    line-height: var(--text-cta-lh);
+    letter-spacing: -0.03em;
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color .2s ease, background-color .2s ease;
+  }
+  .card .cta { margin-top: auto; }
+  .card .game__desc { margin-bottom: 8px; }
+  .cta__icon { display: block; width: 24px; height: 24px; transition: transform .2s ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .cta:hover { border-color: var(--fg-dark-body); background: #424242; }
+    .cta:hover .cta__icon { transform: translate(2px, -2px); }
+  }
+  .cta:focus-visible { outline: 2px solid var(--fg-dark-primary); outline-offset: 3px; }
+
+  /* ---------- Rise-in ----------
+     One effect for everything that appears on scroll ([data-rise].is-in):
+     fade in while moving up 24px. Uses the separate `translate` property so it
+     never fights an element's own transform. Siblings set --rise-delay. */
+  @media (prefers-reduced-motion: no-preference) {
+    .js [data-rise]:not(.is-in) { opacity: 0; translate: 0 24px; }
+    [data-rise].is-in {
+      transition: opacity .8s ease var(--rise-delay, 0s),
+                  translate .8s cubic-bezier(.22, 1, .36, 1) var(--rise-delay, 0s);
+    }
+  }
+
+  /* Art wall: staggered, slightly tilted cards drifting sideways forever.
+     Hovering pauses the drift and lifts one card to the front at 120%. */
+  .wall__head { margin-top: 105px; }
+  .wall__title {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: var(--text-title2-size);
+    line-height: var(--text-title2-lh);
+    letter-spacing: var(--text-title2-ls);
+    font-weight: var(--weight-medium);
+    color: var(--fg-dark-primary);
+  }
+  .wall { --size: clamp(180px, 30vw, 380px); padding: 48px 0 110px; overflow-x: clip; }   /* clip (not hidden) keeps the hover lift visible vertically */
+  /* Moved by JS: slow drift, mouse drag, trackpad / touch swipe; wraps forever.
+     touch-action keeps vertical page scrolling native while horizontal swipes go to the wall. */
+  .wall { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .wall.is-dragging { cursor: grabbing; }
+  .wall.is-dragging .photo { pointer-events: none; }   /* no hover lift flicker mid-drag */
+  .wall__track { display: flex; width: max-content; will-change: transform; }
+  .wall__set { display: flex; gap: 12px; padding-right: 12px; }   /* padding = gap, so one set's width loops seamlessly */
+  .photo {
+    position: relative;
+    flex: none;
+    height: var(--size);   /* width follows each image’s own aspect ratio */
+    margin: 0;
+    overflow: hidden;
+    border-radius: calc(var(--size) * .07);   /* ~27px at full size, ~13px on phones */
+    background: var(--bg-dark-secondary);
+    transform: translateY(var(--y)) rotate(var(--r));
+    transition: transform .4s cubic-bezier(.22, 1, .36, 1), box-shadow .4s ease;
+  }
+  .photo img { width: auto; height: 100%; max-width: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .photo:hover {
+      z-index: 5;
+      transform: translateY(var(--y)) rotate(0deg) scale(1.2);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, .5);
+    }
+  }
+  .photo:nth-child(8n+1) { --y: 0px;  --r: -2deg; }
+  .photo:nth-child(8n+2) { --y: 44px; --r: 1.5deg; }
+  .photo:nth-child(8n+3) { --y: 14px; --r: -1deg; }
+  .photo:nth-child(8n+4) { --y: 56px; --r: 2deg; }
+  .photo:nth-child(8n+5) { --y: 6px;  --r: -1.5deg; }
+  .photo:nth-child(8n+6) { --y: 38px; --r: 1deg; }
+  .photo:nth-child(8n+7) { --y: 20px; --r: -2deg; }
+  .photo:nth-child(8n+8) { --y: 50px; --r: 1.5deg; }
+
+  /* Footer (Figma 49:413): line-drawn skyline and copyright */
+  .footer { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 40px 20px; }
+  .footer__art { width: 100%; max-width: 1200px; height: auto; }
+  .footer__copy { margin: 0; text-align: center; color: var(--fg-dark-body); }
+
+  /* Contact tab (Figma 45:295): yellow tab on the right edge, hidden until the
+     photo wall is reached (.contact.is-shown) */
+  .contact {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 12px;
+    border-radius: 12px 0 0 12px;
+    background: var(--brand-yellow-1);
+    color: var(--fg-header);
+    transform: translate(110%, -50%);
+    visibility: hidden;
+    transition: transform .5s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .5s;
+  }
+  .contact.is-shown {
+    transform: translate(0, -50%);
+    visibility: visible;
+    transition: transform .5s cubic-bezier(.22, 1, .36, 1), visibility 0s;
+  }
+  .contact__label {
+    writing-mode: vertical-rl;
+    font-family: var(--font-display);
+    font-size: var(--text-title5-size);
+    line-height: var(--text-title5-lh);
+    letter-spacing: var(--text-title5-ls);
+    font-weight: var(--weight-medium);
+    white-space: nowrap;
+  }
+  .contact__link { display: block; color: inherit; border-radius: 4px; transition: transform .2s ease; }
+  .contact__link svg { display: block; width: 20px; height: 20px; }
+  @media (hover: hover) and (pointer: fine) {
+    .contact__link:hover { transform: scale(1.15); }
+  }
+  .contact__link:focus-visible { outline: 2px solid var(--fg-header); outline-offset: 3px; }
+
+  /* =========================================================
+     Tablet — fluid (Figma tablet-800)
+     ========================================================= */
+  @media (max-width: 1239px) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1fr) min(56%, 561px);
+      width: auto;
+      margin: 0 31px 0 30px;
+    }
+    .hero__squiggle { width: 77px; }
+
+    .games { width: auto; margin: 0 31px 0 30px; padding-top: 96px; gap: 56px; }
+    .games__grid { row-gap: 56px; }
+    .feature__body { padding-top: 0; gap: 24px; }
+    .hero__title {
+      margin-top: 28px;
+      font-size: clamp(40px, 8vw, 96px);
+      line-height: 0.9;
+    }
+    .hero__intro {
+      margin-top: 17px;
+      max-width: 90%;
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-lh);
+      letter-spacing: var(--text-body-ls);
+    }
+  }
+
+  /* =========================================================
+     Phone — stacked (Figma phone-402)
+     ========================================================= */
+  @media (max-width: 639px) {
+    .hero { padding-top: 34px; }
+    .hero__inner {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+      margin: 0 20px;
+    }
+    .hero__art {
+      order: -1;
+      margin: 0 auto;
+      width: max(200px, min(338px, 84%, calc((100vh - 460px) * 564 / 604)));
+      width: max(200px, min(338px, 84%, calc((100svh - 460px) * 564 / 604)));
+    }
+    .hero__text { padding-top: 0; display: flex; flex-direction: column; }
+    .hero__title {
+      order: 1;
+      margin-top: 24px;
+      max-width: none;
+      font-size: 36px;
+      line-height: 42px;
+      color: var(--brand-orange-2);
+    }
+    .hero__intro {
+      order: 2;
+      margin: 4px 0 0;
+      max-width: none;
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-lh);
+      letter-spacing: var(--text-body-ls);
+    }
+    .hero__squiggle { order: 3; margin: 24px auto 0; }
+
+    .games { margin: 0 20px; padding-top: 72px; gap: 48px; }
+    .feature, .games__grid { grid-template-columns: 1fr; }
+    .feature { gap: 20px; }
+    .feature__poster { width: min(100%, 360px); margin: 0 auto; }
+    .feature__body { gap: 20px; }
+    .games__grid { row-gap: 48px; }
+    .card { gap: 20px; }
+    .game__meta { justify-content: flex-start; flex-direction: column; }
+    .cta { font-size: var(--text-body-size); line-height: var(--text-body-lh); padding: 11px 19px; }
+
+    .wall__title {
+      font-size: 28px;
+      line-height: 32px;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .wall__title { font-size: 24px; line-height: 28px; }
+    .wall__head { margin-top: 64px; }
+    .wall { padding: 32px 0 72px; }
+    .footer { padding: 0 20px 16px; }
+    .contact { gap: 10px; padding: 12px 9px; border-radius: 10px 0 0 10px; }
+    /* sits low on the screen on phones, out of the way of the content */
+    .contact { top: auto; bottom: 88px; transform: translate(110%, 0); }
+    .contact.is-shown { transform: translate(0, 0); }
+    .contact__label { font-size: 15px; line-height: 20px; }
+    .contact__link svg { width: 18px; height: 18px; }
+    .footer__copy { font-size: var(--text-mobile-label1-size); line-height: var(--text-mobile-label1-lh); }
+  }
+
+  /* Touch: contact icons get a ~44px target; the padding is cancelled by the
+     negative margin so the icons stay where they are. The wider gap keeps the
+     two targets from overlapping. */
+  @media (pointer: coarse) {
+    .contact { gap: 20px; }
+    .contact__link { padding: 10px 13px; margin: -10px -13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video__play svg, .cta, .cta__icon { transition: none; }
+    .photo { transition: none; }
+    .contact, .contact.is-shown { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__inner">
+    <div class="hero__text">
+      <svg class="hero__squiggle" viewBox="0 0 104 14" width="104" height="14" fill="none" aria-hidden="true">
+        <path class="sq-line" pathLength="1" d="M19 3.69387L26.3407 11.0346L34.1332 3.23407L42.095 11.1959L50.7425 2.55647L59.6724 11.4863L68.6507 2.5L77.024 10.8733L84.9212 2.97594" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle class="sq-dot sq-dot--start" cx="4" cy="6.5" r="4" fill="currentColor"/>
+        <circle class="sq-dot sq-dot--end" cx="100" cy="6.5" r="4" fill="currentColor"/>
+      </svg>
+      <h1 class="hero__title"><span class="w">Play.</span> <span class="w">Build.</span> <span class="w">Repeat.</span></h1>
+      <p class="hero__intro">
+        I’m an <em>indie game developer</em> passionate about game art, concept design, 3D modeling, game design, and UX.
+        With my team, I’ve <em>built 10+ games</em> across 2D platformers and VR/AR, with one of our notable releases, <em><a href="https://store.steampowered.com/app/1840150/Vigorus/" target="_blank" rel="noopener">Vigorus</a></em>, achieving 50,000+ downloads on Steam.
+      </p>
+    </div>
+    <img class="hero__art" src="assets/illustration-dark.svg" alt="Line illustration of Inken surrounded by doodles of ideas, games and tools" width="564" height="604">
+  </div>
+</header>
+
+<main class="games" aria-label="Games">
+    <article class="feature" data-rise aria-labelledby="g-vigorus">
+      <img class="feature__poster" src="assets/game/vigorus-poster.webp" alt="Vigorus game poster" width="1060" height="1592" loading="lazy">
+      <div class="feature__body">
+        <div class="video" data-yt="a4C83mFIZ4I">
+          <button class="video__play" type="button" aria-label="Play the Vigorus video"><svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true"><path fill="#FF0000" d="M66.5 7.5A8.6 8.6 0 0 0 60.5 1.4C55.2 0 34 0 34 0S12.8 0 7.5 1.4A8.6 8.6 0 0 0 1.4 7.5C0 12.8 0 24 0 24s0 11.2 1.4 16.5a8.6 8.6 0 0 0 6.1 6.1C12.8 48 34 48 34 48s21.2 0 26.5-1.4a8.6 8.6 0 0 0 6.1-6.1C68 35.2 68 24 68 24s0-11.2-1.5-16.5Z"/><path fill="#FFF" d="m27 34 18-10-18-10z"/></svg></button>
+        </div>
+        <div class="game__info">
+          <h3 class="sr-only" id="g-vigorus">Vigorus</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC/Mac</dd></div>
+            <div><dt>Team:</dt><dd>6 members</dd></div>
+            <div><dt>My role:</dt><dd>Art lead/Game design</dd></div>
+          </dl>
+          <p class="game__desc t-body">Vigorus is an award-winning rhythm platformer game with puzzle and narrative experience, garnered 50K+ downloads and 608,466 page views on Steam in its first year. It also ranked in the top 10 of Steam’s free games within its debut month.</p>
+          <a class="cta" href="https://store.steampowered.com/app/1840150/Vigorus/" target="_blank" rel="noopener">Play on Steam<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </div>
+    </article>
+    <article class="feature" data-rise aria-labelledby="g-dive">
+      <img class="feature__poster" src="assets/game/dive-poster.webp" alt="D.I.V.E. game poster" width="530" height="796" loading="lazy">
+      <div class="feature__body">
+        <div class="video" data-yt="86OzNpshQVk">
+          <button class="video__play" type="button" aria-label="Play the D.I.V.E. video"><svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true"><path fill="#FF0000" d="M66.5 7.5A8.6 8.6 0 0 0 60.5 1.4C55.2 0 34 0 34 0S12.8 0 7.5 1.4A8.6 8.6 0 0 0 1.4 7.5C0 12.8 0 24 0 24s0 11.2 1.4 16.5a8.6 8.6 0 0 0 6.1 6.1C12.8 48 34 48 34 48s21.2 0 26.5-1.4a8.6 8.6 0 0 0 6.1-6.1C68 35.2 68 24 68 24s0-11.2-1.5-16.5Z"/><path fill="#FFF" d="m27 34 18-10-18-10z"/></svg></button>
+        </div>
+        <div class="game__info">
+          <h3 class="sr-only" id="g-dive">D.I.V.E.</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC</dd></div>
+            <div><dt>Team:</dt><dd>8 members</dd></div>
+            <div><dt>My role:</dt><dd>Art lead/Game design</dd></div>
+          </dl>
+          <p class="game__desc t-body">D.I.V.E. is a PC fast-paced 2D action platformer launched free on itch.io, players can control a cyber world bounty hunter to solve the puzzles and combat in quick action. The game is designed for fast-moving, or “blink combat”. The main game mechanic is the Dash Attack. With this super mobility, the player can solve the platformer puzzle and change position really quickly. In combat, the player can use the dash attack to reposition and backstab the enemies before they react.</p>
+          <a class="cta" href="https://gmyth.itch.io/dive" target="_blank" rel="noopener">Play on itch<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </div>
+    </article>
+    <article class="feature" data-rise aria-labelledby="g-bastion">
+      <img class="feature__poster" src="assets/game/bastion-poster.webp" alt="Project Bastion game poster" width="1060" height="1592" loading="lazy">
+      <div class="feature__body">
+        <div class="video" data-yt="nPPqHcX_ROo">
+          <button class="video__play" type="button" aria-label="Play the Project Bastion video"><svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true"><path fill="#FF0000" d="M66.5 7.5A8.6 8.6 0 0 0 60.5 1.4C55.2 0 34 0 34 0S12.8 0 7.5 1.4A8.6 8.6 0 0 0 1.4 7.5C0 12.8 0 24 0 24s0 11.2 1.4 16.5a8.6 8.6 0 0 0 6.1 6.1C12.8 48 34 48 34 48s21.2 0 26.5-1.4a8.6 8.6 0 0 0 6.1-6.1C68 35.2 68 24 68 24s0-11.2-1.5-16.5Z"/><path fill="#FFF" d="m27 34 18-10-18-10z"/></svg></button>
+        </div>
+        <div class="game__info">
+          <h3 class="sr-only" id="g-bastion">Project Bastion</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>IOS AR game</dd></div>
+            <div><dt>Team:</dt><dd>5 members</dd></div>
+            <div><dt>My role:</dt><dd>Art lead/3D</dd></div>
+          </dl>
+          <p class="game__desc t-body">Project Bastion is a 3D barrage shooter game. Gamer uses AR technology to drive mech and destroy the enemy bastion and also build your own bastion in this ruin! Facing unpredictable modular bastions, you can use your skills and ingenuity to break through the walls in the rain of bullets. In the same time, you can use different modules to create a personalized bastion that frustrates the offense and plunder of others.</p>
+        </div>
+      </div>
+    </article>
+    <div class="games__grid">
+      <article class="card" data-rise>
+        <img class="card__img" src="assets/game/relink.webp" alt="Re: Link game art" width="1109" height="857" loading="lazy">
+        <div class="game__info">
+          <h3 class="sr-only">Re: Link</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC/Xbox</dd></div>
+            <div><dt>Team:</dt><dd>5 members</dd></div>
+            <div><dt>My role:</dt><dd>Art lead/3D</dd></div>
+          </dl>
+          <p class="game__desc t-body">Re: Link is a top-down action-stealth game that continues digging into this theme to deliver an emotional experience about companionship, as well as create an exhilarating hacker experience using unique mechanisms. The core gameplay is Connect &amp; Disconnect.</p>
+          <a class="cta" href="https://youtu.be/QUG2UxBjWyk" target="_blank" rel="noopener">Watch demo video<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </article>
+      <article class="card" data-rise>
+        <img class="card__img" src="assets/game/abduction.webp" alt="Intergalactic Abduction is Not Funny game art" width="1109" height="857" loading="lazy">
+        <div class="game__info">
+          <h3 class="sr-only">Intergalactic Abduction is Not Funny</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC</dd></div>
+            <div><dt>Team:</dt><dd>8 members</dd></div>
+            <div><dt>My role:</dt><dd>Concept art/3D</dd></div>
+          </dl>
+          <p class="game__desc t-body">Intergalactic Abduction is Not Funny is a top-down adventure game that offers a new control mechanism with a dual-stick game controller. In this game, the player has to take control of an alien creature with two stretchable tentacles, where each tentacle is controlled by a joystick on a modern dual-stick controller.</p>
+          <a class="cta" href="https://youtu.be/uRUGxfM4K6U" target="_blank" rel="noopener">Watch demo video<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </article>
+      <article class="card" data-rise>
+        <img class="card__img" src="assets/game/pillow-war.webp" alt="Pillow War game art" width="669" height="516" loading="lazy">
+        <div class="game__info">
+          <h3 class="sr-only">Pillow War</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC</dd></div>
+            <div><dt>Team:</dt><dd>5 members</dd></div>
+            <div><dt>My role:</dt><dd>All art work/3D</dd></div>
+          </dl>
+          <p class="game__desc t-body">Pillow war is a 4 player party game developed on Global Game Jam. - What is home meant to you? - A place can do whatever you want! - Of course Pillow Fight! The main goal is to throw pillows to other players to grant score!</p>
+          <a class="cta" href="https://v3.globalgamejam.org/2019/games/pillow-war" target="_blank" rel="noopener">Play on Game Jam<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </article>
+      <article class="card" data-rise>
+        <img class="card__img" src="assets/game/layers.webp" alt="Layers game art" width="1109" height="857" loading="lazy">
+        <div class="game__info">
+          <h3 class="sr-only">Layers</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC</dd></div>
+            <div><dt>Team:</dt><dd>6 members</dd></div>
+            <div><dt>My role:</dt><dd>Design &amp; all art work</dd></div>
+          </dl>
+          <p class="game__desc t-body">Layer is a game developed on Global Game Jam. the protagonist of the game has the ability to switch layers, and the ability of skills is that the character can be traversed into different layers in the picture, and the puzzle can be solved by switching layers.</p>
+          <a class="cta" href="https://youtu.be/a-rCcAZOCys" target="_blank" rel="noopener">Watch demo video<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </article>
+      <article class="card" data-rise>
+        <img class="card__img" src="assets/game/transtar.webp" alt="TranStar game art" width="1109" height="857" loading="lazy">
+        <div class="game__info">
+          <h3 class="sr-only">TranStar</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC</dd></div>
+            <div><dt>Team:</dt><dd>5 members</dd></div>
+            <div><dt>My role:</dt><dd>Design &amp; all art work</dd></div>
+          </dl>
+          <p class="game__desc t-body">TranStar is a two-player Shooting Game developed on Global Game Jam. Control your satellites in space, shooting asteroids and trying to destroy your opponent. Be careful, reflectors, refractors and other machinery in space will change an asteroid’s course.</p>
+          <a class="cta" href="https://youtu.be/43s94Qxxfq8" target="_blank" rel="noopener">Watch demo video<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </article>
+      <article class="card" data-rise>
+        <img class="card__img" src="assets/game/light-chaser.webp" alt="Light Chaser game art" width="1109" height="857" loading="lazy">
+        <div class="game__info">
+          <h3 class="sr-only">Light Chaser</h3>
+          <dl class="game__meta">
+            <div><dt>Platform:</dt><dd>PC</dd></div>
+            <div><dt>Team:</dt><dd>4 members</dd></div>
+            <div><dt>My role:</dt><dd>Design &amp; all art work</dd></div>
+          </dl>
+          <p class="game__desc t-body">Light Chaser (Xun Guang) is a top-down 2-player shooting game where two aliens shoot light waves to explore the scene and try to execute each other. Made at Global Game Jam ’17.</p>
+          <a class="cta" href="https://youtu.be/Ouq11LRebxk" target="_blank" rel="noopener">Watch demo video<img class="cta__icon" src="assets/game/arrow.svg" alt="" width="24" height="24"></a>
+        </div>
+      </article>
+    </div>
+</main>
+
+<section class="side" aria-labelledby="wall-title">
+  <div class="wall__head" data-rise>
+    <h2 class="wall__title" id="wall-title">Concept art &amp; 3D</h2>
+  </div>
+  <div class="wall" data-rise>
+    <div class="wall__track">
+      <div class="wall__set">
+        <figure class="photo"><img src="assets/game/toaster-killer.webp" alt="3D model of Toaster Killer, a battered toaster robot on mechanical legs, with turnaround views" width="812" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/dive.webp" alt="Pixel-art neon city at night under the title DIVE" width="1350" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/reactor.webp" alt="3D render of a glowing sci-fi reactor core inside an industrial hall" width="1350" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/google-express.webp" alt="Animated 3D scene of a pastel pink room with a blue arched door and floating spheres" width="590" height="460" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/skyline.webp" alt="Art-deco city skyline in gold against a setting sun" width="1354" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/ar-cube.webp" alt="AR game screen with a glowing blue cube creature on a wooden floor" width="1350" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/hopechaser.webp" alt="Animated orange hexagon emblem pulsing inside concentric rings" width="380" height="296" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/city-bw.webp" alt="Black-and-white 3D cyberpunk city looking up between towers" width="1350" height="760" loading="lazy" draggable="false"></figure>
+      </div>
+      <!-- copy of the set so the drift loops seamlessly -->
+      <div class="wall__set" aria-hidden="true">
+        <figure class="photo"><img src="assets/game/toaster-killer.webp" alt="" width="812" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/dive.webp" alt="" width="1350" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/reactor.webp" alt="" width="1350" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/google-express.webp" alt="" width="590" height="460" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/skyline.webp" alt="" width="1354" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/ar-cube.webp" alt="" width="1350" height="760" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/hopechaser.webp" alt="" width="380" height="296" loading="lazy" draggable="false"></figure>
+        <figure class="photo"><img src="assets/game/city-bw.webp" alt="" width="1350" height="760" loading="lazy" draggable="false"></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" data-rise>
+  <img class="footer__art" src="assets/footer-illustration-dark.svg" alt="" width="1200" height="165" loading="lazy">
+  <p class="footer__copy t-label2">© 2027 Inken Zhou. All rights reserved. All images, videos and illustrations on this site were created by Inken.</p>
+</footer>
+
+<!-- Contact tab: slides in from the right edge once the photo wall is reached -->
+<aside class="contact" id="contact" aria-label="Contact">
+  <span class="contact__label" aria-hidden="true">contact me</span>
+  <a class="contact__link" href="mailto:yszhou1223@gmail.com" aria-label="Email Inken (yszhou1223@gmail.com)">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M21.6 5.7492L12 14.1816L2.4 5.7372V5.4H21.6V5.7492ZM2.4 18.6001V8.93408L12 17.3761L21.6 8.94368V18.6001H2.4ZM0 21H24V3H0V21Z"/></svg>
+  </a>
+  <a class="contact__link" href="https://www.linkedin.com/in/iz-ux/" target="_blank" rel="noopener" aria-label="Inken on LinkedIn">
+    <svg viewBox="-2 -2 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M18.5195 0H1.47656C0.660156 0 0 0.644531 0 1.44141V18.5547C0 19.3516 0.660156 20 1.47656 20H18.5195C19.3359 20 20 19.3516 20 18.5586V1.44141C20 0.644531 19.3359 0 18.5195 0ZM5.93359 17.043H2.96484V7.49609H5.93359V17.043ZM4.44922 6.19531C3.49609 6.19531 2.72656 5.42578 2.72656 4.47656C2.72656 3.52734 3.49609 2.75781 4.44922 2.75781C5.39844 2.75781 6.16797 3.52734 6.16797 4.47656C6.16797 5.42187 5.39844 6.19531 4.44922 6.19531ZM17.043 17.043H14.0781V12.4023C14.0781 11.2969 14.0586 9.87109 12.5352 9.87109C10.9922 9.87109 10.7578 11.0781 10.7578 12.3242V17.043H7.79688V7.49609H10.6406V8.80078H10.6797C11.0742 8.05078 12.043 7.25781 13.4844 7.25781C16.4883 7.25781 17.043 9.23438 17.043 11.8047V17.043Z"/></svg>
+  </a>
+</aside>
+
+<script>
+// YouTube videos: show the video's still with a play button; the player (and
+// YouTube's scripts) only load once it is clicked. data-yt holds the video ID.
+document.querySelectorAll(".video").forEach(box => {
+  const id = box.dataset.yt;
+  const play = box.querySelector(".video__play");
+  if (!id) { play.disabled = true; return; }
+  box.style.backgroundImage = `url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)`;
+  play.addEventListener("click", () => {
+    const frame = document.createElement("iframe");
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    frame.title = play.getAttribute("aria-label").replace("Play the ", "");
+    frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    frame.allowFullscreen = true;
+    play.replaceWith(frame);
+    frame.focus();
+  });
+});
+
+// Contact tab: visible once the photo wall section's top has scrolled into the lower
+// 40% of the screen, and hidden again when scrolling back up to the cover
+(() => {
+  const tab = document.getElementById("contact");
+  const side = document.querySelector(".side");
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    tab.classList.toggle("is-shown", side.getBoundingClientRect().top < innerHeight * 0.6);
+  };
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener("resize", update);
+  update();
+})();
+
+// Everything that animates in on scroll: [data-rise] (shared rise).
+// Triggers once each.
+(() => {
+  const els = document.querySelectorAll("[data-rise]");
+  if (!("IntersectionObserver" in window)) return els.forEach(el => el.classList.add("is-in"));
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+  }), { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+  // Anything already on the first screen (the top of the next section) rises in as part of
+  // the opening, once the cover has played its intro, instead of waiting for a scroll.
+  const peek = [];
+  els.forEach(el => {
+    if (scrollY < 40 && el.getBoundingClientRect().top < innerHeight - 40) peek.push(el);
+    else io.observe(el);
+  });
+  const showPeek = () => peek.splice(0).forEach(el => {
+    el.style.setProperty("--rise-delay", ".4s");
+    el.classList.add("is-in");
+  });
+  document.addEventListener("hero:play", () => requestAnimationFrame(showPeek), { once: true });
+  setTimeout(showPeek, 4000);   // never leave it hidden
+  // A fast fling or jump can carry an element from below the screen to above it
+  // between two frames, so the observer never sees it; reveal anything already passed.
+  let ticking = false;
+  addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      els.forEach(el => {
+        if (!el.classList.contains("is-in") && el.getBoundingClientRect().top < innerHeight * 0.92) {
+          el.classList.add("is-in");
+          io.unobserve(el);
+        }
+      });
+    });
+  }, { passive: true });
+})();
+
+// Photo wall: drifts on its own; mouse drag, trackpad and touch swipes move it too.
+// Position wraps by one set's width so it never runs out of photos.
+(() => {
+  const wall = document.querySelector(".wall");
+  const track = wall.querySelector(".wall__track");
+  const set = track.querySelector(".wall__set");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DRIFT = reduce ? 0 : -0.045;          // px per ms (leftwards); 0 when motion is reduced
+  let x = 0, v = 0, last = performance.now();
+  let hovering = false, drag = null;
+  const wrap = () => { const w = set.offsetWidth; if (!w) return; x %= w; if (x > 0) x -= w; };
+
+  // The frame loop only runs while the wall is on screen
+  let visible = false, frame = 0;
+  const tick = now => {
+    const dt = Math.min(now - last, 50);
+    last = now;
+    if (!drag) {
+      if (Math.abs(v) > 0.01) { x += v * dt; v *= Math.pow(0.94, dt / 16); }   // fling momentum
+      else { v = 0; hovering = overPhoto(); if (!hovering) x += DRIFT * dt; }
+    }
+    wrap();
+    track.style.transform = `translate3d(${x}px, 0, 0)`;
+    frame = visible ? requestAnimationFrame(tick) : 0;
+  };
+  const start = () => { if (!frame) { last = performance.now(); frame = requestAnimationFrame(tick); } };
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); }).observe(wall);
+  } else {
+    visible = true;
+    start();
+  }
+
+  // Pause only while the mouse is actually over a photo (not the margins or gaps).
+  // Checked every frame from the last mouse position, so a photo drifting under a
+  // still cursor pauses too.
+  let mouse = null;
+  wall.addEventListener("pointermove", e => { if (e.pointerType === "mouse") mouse = { x: e.clientX, y: e.clientY }; });
+  wall.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") { mouse = null; hovering = false; } });
+  const overPhoto = () => {
+    if (!mouse) return false;
+    const el = document.elementFromPoint(mouse.x, mouse.y);
+    return !!(el && el.closest(".photo") && wall.contains(el));
+  };
+
+  // Mouse drag and touch swipe
+  wall.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    drag = { id: e.pointerId, x: e.clientX, start: x, lastX: e.clientX, lastT: e.timeStamp, moved: false };
+    v = 0;
+  });
+  wall.addEventListener("pointermove", e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved) {
+      if (Math.abs(dx) < 4) return;
+      drag.moved = true;
+      try { wall.setPointerCapture(e.pointerId); } catch (_) {}
+      wall.classList.add("is-dragging");
+    }
+    const dt = Math.max(e.timeStamp - drag.lastT, 1);
+    v = (e.clientX - drag.lastX) / dt;
+    drag.lastX = e.clientX; drag.lastT = e.timeStamp;
+    x = drag.start + dx;
+  });
+  const endDrag = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag.moved || e.timeStamp - drag.lastT > 80) v = 0;   // held still before letting go: no fling
+    drag = null;
+    wall.classList.remove("is-dragging");
+  };
+  wall.addEventListener("pointerup", endDrag);
+  wall.addEventListener("pointercancel", endDrag);
+  wall.addEventListener("dragstart", e => e.preventDefault());
+
+  // Trackpad two-finger swipe (and shift + mouse wheel). Mostly-vertical scrolls are left alone.
+  wall.addEventListener("wheel", e => {
+    const dx = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX;
+    if (Math.abs(dx) <= Math.abs(e.shiftKey ? 0 : e.deltaY)) return;
+    e.preventDefault();
+    v = 0;
+    x -= dx * (e.deltaMode === 1 ? 16 : 1);
+  }, { passive: false });
+})();
+
+// Hero entrance starts with the illustration's own animation
+(() => {
+  const hero = document.querySelector(".hero");
+  const art = hero.querySelector(".hero__art");
+  const play = () => {
+    if (hero.classList.contains("is-playing")) return;
+    hero.classList.add("is-playing");
+    document.dispatchEvent(new Event("hero:play"));
+  };
+  if (art.complete) play();
+  else { art.addEventListener("load", play, { once: true }); art.addEventListener("error", play, { once: true }); }
+  setTimeout(play, 3000); // never leave the text hidden
+})();
+
+</script>
+</body>
+</html>
