@@ -28,8 +28,16 @@
   --bg-main:        #EFEFEF; /* Main page backfill */
   --bg-secondary:   #E5E5E5; /* Secondary section */
   --bg-enhance:     #CBCBCB; /* Enhancement part     · Figma: Background/third */
-  --bg-dark:        #1C1C1C; /* Main page BG for dark page */
-  --background-dark: #3F3D3D; /* Card surface on dark pages */
+  --bg-dark:        var(--bg-dark-primary);   /* alias, kept for existing pages */
+  --background-dark: var(--bg-dark-secondary); /* alias, kept for existing pages */
+
+  /* ---------- Foreground-dark (Figma) ---------- */
+  --fg-dark-primary:  #F5F5F5; /* dark-primary: headings/text on dark pages */
+  --fg-dark-body:     #B1B1B1; /* dark-body: body text on dark pages */
+
+  /* ---------- Background-dark (Figma) ---------- */
+  --bg-dark-primary:   #1C1C1C; /* Dark-primary: main page BG for dark page */
+  --bg-dark-secondary: #353535; /* Dark-secondary: cards / surfaces on dark pages */
 
   /* ---------- Branding / highlight ---------- */
   --brand-yellow-1: #FFD900; /* Yellow decoration · Figma: Branding/main */
@@ -85,12 +93,12 @@
 
 /* Dark page variant: add data-theme="dark" to <html> or any section */
 [data-theme="dark"] {
-  --color-text:        #F5F5F5;
+  --color-text:        var(--fg-dark-primary);
   --color-text-strong: #EFEFEF;
   --color-text-sub:    #CBCBCB;
-  --color-text-body:   #B1B1B1;
+  --color-text-body:   var(--fg-dark-body);
   --color-text-muted:  #969592;
   --color-border:      #3A3232;
-  --color-page:        var(--bg-dark);
+  --color-page:        var(--bg-dark-primary);
   --color-surface:     #292424;
 }
